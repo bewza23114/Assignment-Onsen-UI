@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
+    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
+    <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+</head>
+<style>
+    #mypage .page__background {
+        background-size: 360px 640px;
+        background-image: url('https://i.pinimg.com/originals/84/e9/f5/84e9f58267582abf22fa8d87ab43acba.jpg');
+        opacity: 0.9;
+    }
+
+    * {
+        font-family: "Times New Roman", Times, serif;
+    }
+</style>
+
+<body>
+    <ons-page id="mypage">
+        <div style="text-align: center; margin-top: 115px; background-color: #ECECEC;">
+            <p style="font-size: 25px; padding-top: 20px">
+                Login
+            </p>
+            <p>
+                <ons-input style="width: 300px;" id="username" modifier="underbar" placeholder="Username" float>
+                </ons-input>
+            </p>
+            <p>
+                <ons-input style="width: 300px;" id="password" modifier="underbar" type="password"
+                    placeholder="Password" float>
+                </ons-input>
+            </p>
+            <p style="margin-top: 50px; padding-right: 20px; padding-left: 20px">
+                <ons-button onclick="window.location.href='foodcategory.html'" modifier="large"
+                    style="background-color:#555555">Sign In</ons-button>
+            </p>
+            <p>
+                <hr>
+            </p>
+            <p style="padding-right: 20px; padding-left: 20px;">
+                <ons-button onclick="window.location.href='foodcategory.html'" modifier="large"
+                    style="background-color:#f44336;">Google</ons-button>
+            </p>
+            <p style="padding-right: 20px; padding-left: 20px;">
+                <ons-button onclick="window.location.href='foodcategory.html'" modifier="large">Facebook</ons-button>
+                <p style="padding-bottom: 10px;">
+                    <ons-button onclick="window.location.href='register.html'" modifier="quiet">Create Account
+                    </ons-button>
+                    <ons-button modifier="quiet">Forget Password</ons-button>
+                </p>
+            </p>
+        </div>
+    </ons-page>
+</body>
+
+</html>
