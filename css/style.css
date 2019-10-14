@@ -1,0 +1,50 @@
+#mypage .page__background {
+    background-size: 360px 640px;
+    background-image: url('https://i.pinimg.com/originals/84/e9/f5/84e9f58267582abf22fa8d87ab43acba.jpg');
+    opacity: 0.4;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: "Times New Roman", Times, serif;
+}
+
+.column {
+    float: left;
+    width: 25%;
+    padding: 0 10px;
+}
+
+.row {
+    margin: 0 -5px;
+    margin-top: 20px;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+@media screen and (max-width: 600px) {
+    .column {
+        width: 50%;
+        display: block;
+        margin-bottom: 5px;
+    }
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 16px;
+    text-align: center;
+    background-color: rgba(117, 122, 128, 0.938);
+}
+
+.size {
+    font-size: 40px;
+}
+
+.color {
+    color: whitesmoke;
+}
