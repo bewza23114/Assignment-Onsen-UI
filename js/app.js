@@ -61,7 +61,7 @@ document.addEventListener('init', function (event) {
 
     $("#logout").click(function () {
       firebase.auth().signOut().then(function () {
-        $("#content")[0].load("home.html");
+        $("#content")[0].load("foodcategory2.html");
         $("#sidemenu")[0].close();
       }).catch(function (error) {
         console.log(error.message);
@@ -69,10 +69,26 @@ document.addEventListener('init', function (event) {
     });
 
     $("#home").click(function () {
-      $("#content")[0].load("home.html");
+      $("#content")[0].load("foodcategory2.html");
       $("#sidemenu")[0].close();
     });
   }
+  var provider = new firebase.auth.GoogleAuthProvider();
+
+  $("#googlebtn").click(function () {
+    firebase.auth().signInWithPopup(provider).then(function (result) {
+      var token = result.credential.accessToken;
+      var user = result.user;
+      $("#content")[0].load("foodcategory2.html");
+      // ...
+    }).catch(function (error) {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      var email = error.email;
+      var credential = error.credential;
+      // ...
+    });
+  })
 
   if (page.id === 'loginPage') {
     console.log("loginPage");
@@ -80,14 +96,16 @@ document.addEventListener('init', function (event) {
     $("#signinbtn").click(function () {
       var username = $("#username").val();
       var password = $("#password").val();
-      firebase.auth().signInWithEmailAndPassword(username, password)
-        .catch(function (error) {
-          console.log(error.message);
-        });
+      firebase.auth().signInWithEmailAndPassword(username, password).then(function () {
+        $("#content")[0].load("foodcategory2.html");
+        $("#sidemenu")[0].close();
+      }).catch(function (error) {
+        console.log(error.message);
+      });
     });
 
     $("#backhomebtn").click(function () {
-      $("#content")[0].load("home.html");
+      $("#content")[0].load("foodcategory2.html");
     });
   }
 });
