@@ -27,6 +27,22 @@ firebase.auth().onAuthStateChanged(function (user) {
 document.addEventListener('init', function (event) {
   var page = event.target;
 
+  var provider = new firebase.auth.GoogleAuthProvider();
+
+  $("#googlebtn").click(function () {
+    firebase.auth().signInWithPopup(provider).then(function (result) {
+      var token = result.credential.accessToken;
+      var user = result.user;
+      $("#content")[0].load("foodcategory2.html");
+      // ...
+    }).catch(function (error) {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      var email = error.email;
+      var credential = error.credential;
+      // ...
+    });
+  })
 
   if (page.id === 'homePage') {
     console.log("homePage");
@@ -47,6 +63,41 @@ document.addEventListener('init', function (event) {
 
         $("#carousel").append(item);
       });
+    });
+    $("#fastfoodbtn").click(function () {
+      console.log("click fastfoodbtn")
+      $("#content")[0].load("restaurantlist2.html");
+    });
+  }
+
+  if (page.id === 'restaurantlistPage') {
+    console.log("restaurantlistPage");
+    $("#backbtn").click(function () {
+      console.log("click backbtn RT")
+      $("#content")[0].load("foodcategory2.html");
+    });
+    $("#gobtn").click(function () {
+      console.log("click gobtn")
+      $("#content")[0].load("restaurantmenu2.html");
+    });
+  }
+
+  if (page.id === 'restaurantmenuPage') {
+    console.log("restaurantlistPage");
+    $("#backbtn").click(function () {
+      console.log("click backbtn RM")
+      $("#content")[0].load("restaurantlist2.html");
+    });
+    $("#orderbtn").click(function () {
+      console.log("click orderbtn")
+      $("#content")[0].load("orderconfirmation2.html");
+    });
+  }
+  if (page.id === 'orderconfirmationPage') {
+    console.log("orderconfirmationPage");
+    $("#backbtn").click(function () {
+      console.log("click backbtn OC")
+      $("#content")[0].load("restaurantmenu2.html");
     });
   }
 
@@ -72,22 +123,6 @@ document.addEventListener('init', function (event) {
       $("#sidemenu")[0].close();
     });
   }
-  var provider = new firebase.auth.GoogleAuthProvider();
-
-  $("#googlebtn").click(function () {
-    firebase.auth().signInWithPopup(provider).then(function (result) {
-      var token = result.credential.accessToken;
-      var user = result.user;
-      $("#content")[0].load("foodcategory2.html");
-      // ...
-    }).catch(function (error) {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      var email = error.email;
-      var credential = error.credential;
-      // ...
-    });
-  })
 
   if (page.id === 'loginPage') {
     console.log("loginPage");
