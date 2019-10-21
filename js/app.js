@@ -58,7 +58,7 @@ document.addEventListener('init', function (event) {
         var item = `<ons-carousel-item modifier="nodivider" id="${doc.data().id}" class="recomended_item">
         <div class="thumbnail" style="background-image: url('${doc.data().photoUrl}'); margin-top:10px;">
         </div>
-        <div class="recomended_item_title" id="item1_name"">${doc.data().name}</div>
+        <div style="background-color:rgba(117, 122, 128, 0.938);" class="recomended_item_title" id="item1_name""><span style="color: white">${doc.data().name}</span></div>
         </ons-carousel-item>`;
 
         $("#carousel").append(item);
@@ -71,6 +71,36 @@ document.addEventListener('init', function (event) {
   }
 
   if (page.id === 'restaurantlistPage') {
+    db.collection("restaurant").get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        var item = `<ons-card style="padding-top:10px">
+    <div
+        style="background-size: 330px auto; background-repeat: no-repeat; background-position: center; height:100px;
+        background-image:url('${doc.data().picture}');">
+        <div style="margin-left: 84%; width:16%; border-radius: 4px; margin-bottom:5px; background-color: rgb(241, 137, 40);">
+            <ons-icon size="15px" style="color: rgb(255, 255, 255);" icon="fa-star"><span
+                    style="color:white; padding-left:5px">${doc.data().rating}</span>
+            </ons-icon>
+        </div>
+    </div>
+    <ons-row>
+        <ons-col style="padding-left: 7px">
+            <div style="font-size: 18px; padding-top:7px; font-weight: bold;">${doc.data().name}</div>
+            <div style="font-size: 15px">Distance : ${doc.data().distance} km / ${doc.data().time} min<span style="padding-left:18px; font-size: 17px;
+             color: rgb(17, 180, 58)">${doc.data().status}</span></div>
+        </ons-col>
+        <ons-col width=18%>
+            <div onclick="gomenu('${doc.id}');" class="btncard">Go<ons-icon size="13px"
+                    style="padding-left:1px" icon="fa-chevron-right"></ons-icon>
+            </div>
+        </ons-col>
+    </ons-row>
+</ons-card>`;
+
+        $("#listrestaurant").append(item);
+      });
+    });
+
     console.log("restaurantlistPage");
     $("#backbtn").click(function () {
       console.log("click backbtn RT")
@@ -83,6 +113,39 @@ document.addEventListener('init', function (event) {
   }
 
   if (page.id === 'restaurantmenuPage') {
+
+    var valueid = localStorage.getItem("curr_restid");
+
+    var docRef = db.collection("restaurant").doc(valueid);
+
+    docRef.get().then(function (doc) {
+      var name = doc.data().name;
+      var distance = doc.data().distance;
+      var time = doc.data().time;
+      var rating = doc.data().rating;
+      var picture = doc.data().picture;
+      var status = doc.data().status;
+      var menu = doc.data().menu;
+
+      $("#name").text(name)
+      $("#distance").text(distance)
+      $("#time").text(time)
+      $("#rating").text(rating)
+      $("#picture").css("background-image", "url('" + picture + "')")
+      $("#status").text(status)
+      $("#listmenu").empty()
+      menu.forEach(element => {
+        var item = `<ons-list-item style="background-color: rgb(230, 230, 230, 0.93);">
+        <div class="left">${element.name}</div>
+        <div class="right"><span>${element.price}฿&nbsp&nbsp</span><ons-button><ons-icon icon="fa-plus"></ons-icon></ons-button></div>
+        </ons-list-item>`
+        $("#listmenu").append(item);
+        console.log("name:", element.name, ",price:", element.price);
+      });
+    }).catch(function (error) {
+      console.log("Error getting cached document:", error);
+    });
+
     console.log("restaurantlistPage");
     $("#backbtn").click(function () {
       console.log("click backbtn RM")
@@ -137,9 +200,25 @@ document.addEventListener('init', function (event) {
         console.log(error.message);
       });
     });
-
+    $("#createaccountbtn").click(function(){
+      console.log("click create account btn");
+      $("#content")[0].load("register.html");
+    });
     $("#backhomebtn").click(function () {
       $("#content")[0].load("foodcategory2.html");
     });
   }
+  if (page.id === 'registerPage') {
+    $("#backhomebtn").click(function () {
+      $("#content")[0].load("foodcategory2.html");
+    });
+  }
+
+
+
 });
+
+function gomenu(id) {
+  localStorage.setItem("curr_restid", id);
+  $("#content")[0].load("restaurantmenu2.html");
+}
