@@ -20,6 +20,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     var email = user.email;
     console.log(email + " signed in");
   } else {
+    localStorage.clear();
     console.log("signed out");
   }
 });
@@ -44,8 +45,8 @@ document.addEventListener('init', function (event) {
     });
   })
 
-  if (page.id === 'homePage') {
-    console.log("homePage");
+  if (page.id === 'foodcategoryPage') {
+    console.log("foodcategoryPage");
 
     $("#menubtn").click(function () {
       console.log("click menubtn")
@@ -55,8 +56,13 @@ document.addEventListener('init', function (event) {
     db.collection("recommended").get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
 
-        var item = `<ons-carousel-item modifier="nodivider" id="${doc.data().id}" class="recomended_item">
-        <div class="thumbnail" style="background-image: url('${doc.data().photoUrl}'); margin-top:10px;">
+        var item = `<ons-carousel-item modifier="nodivider" onclick="gomenu('${doc.data().restaurant_id}');" class="recomended_item">
+        <div class="thumbnail" style="background-image: url('${doc.data().picture}'); margin-top:10px;">
+        <div style="margin-left: 84%; width:16%; border-radius: 4px; margin-bottom:5px; background-color: rgb(241, 137, 40);">
+            <ons-icon size="15px" style="color: rgb(255, 255, 255);" icon="fa-star"><span
+                    style="color:white; padding-left:5px">${doc.data().rating}</span>
+            </ons-icon>
+        </div>
         </div>
         <div style="background-color:rgba(117, 122, 128, 0.938);" class="recomended_item_title" id="item1_name""><span style="color: white">${doc.data().name}</span></div>
         </ons-carousel-item>`;
@@ -65,13 +71,21 @@ document.addEventListener('init', function (event) {
       });
     });
     $("#fastfoodbtn").click(function () {
-      console.log("click fastfoodbtn")
-      $("#content")[0].load("restaurantlist2.html");
+      console.log("click fastfoodbtn");
+      setcategory("fastfood");
+    });
+    $("#steakbtn").click(function () {
+      console.log("click steakbtn");
+      setcategory("steak");
+    });
+    $("#thaifoodbtn").click(function () {
+      console.log("click thaifoodbtn");
+      setcategory("thaifood");
     });
   }
 
   if (page.id === 'restaurantlistPage') {
-    db.collection("restaurant").get().then((querySnapshot) => {
+    db.collection("restaurant").where("type", "==", localStorage.getItem("curr_type")).get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         var item = `<ons-card style="padding-top:10px">
     <div
@@ -137,7 +151,7 @@ document.addEventListener('init', function (event) {
       menu.forEach(element => {
         var item = `<ons-list-item style="background-color: rgb(230, 230, 230, 0.93);">
         <div class="left">${element.name}</div>
-        <div class="right"><span>${element.price}฿&nbsp&nbsp</span><ons-button><ons-icon icon="fa-plus"></ons-icon></ons-button></div>
+        <div class="right"><span>${element.price}฿&nbsp&nbsp</span><ons-button onclick="addorder(${element.price},'${element.name}')"><ons-icon icon="fa-plus"></ons-icon></ons-button></div>
         </ons-list-item>`
         $("#listmenu").append(item);
         console.log("name:", element.name, ",price:", element.price);
@@ -148,8 +162,9 @@ document.addEventListener('init', function (event) {
 
     console.log("restaurantlistPage");
     $("#backbtn").click(function () {
+      localStorage.clear();
       console.log("click backbtn RM")
-      $("#content")[0].load("restaurantlist2.html");
+      $("#content")[0].load("foodcategory2.html");
     });
     $("#orderbtn").click(function () {
       console.log("click orderbtn")
@@ -158,6 +173,41 @@ document.addEventListener('init', function (event) {
   }
   if (page.id === 'orderconfirmationPage') {
     console.log("orderconfirmationPage");
+
+    var order = JSON.parse(localStorage.getItem("order"));
+
+    if (order !== null) {
+      $("#order").empty();
+      order.forEach(element => {
+
+        var item = `<ons-row >
+        <ons-col>
+        <div style="text-align:left; padding-left:28px" class="order">
+        ${element.amount}
+        </div>
+        </ons-col>
+        <ons-col width="60%">
+        <div class="order">
+        ${element.name}
+        </div>
+        </ons-col>
+        <ons-col>
+        <div style="text-align:right; padding-right:13px" class="order">
+        ${element.price * element.amount}
+        </div>
+        </ons-col>
+        </ons-row>`
+
+        $("#order").append(item);
+      });
+      $("#total").text(JSON.parse(localStorage.getItem("total")));
+    }
+    $("#creditcard").click(function(){
+      console.log("pay as credit");
+      localStorage.clear();
+      $("#content")[0].load("foodcategory2.html");
+    });
+
     $("#backbtn").click(function () {
       console.log("click backbtn OC")
       $("#content")[0].load("restaurantmenu2.html");
@@ -174,6 +224,7 @@ document.addEventListener('init', function (event) {
 
     $("#logout").click(function () {
       firebase.auth().signOut().then(function () {
+        localStorage.clear();
         $("#content")[0].load("foodcategory2.html");
         $("#sidemenu")[0].close();
       }).catch(function (error) {
@@ -200,7 +251,7 @@ document.addEventListener('init', function (event) {
         console.log(error.message);
       });
     });
-    $("#createaccountbtn").click(function(){
+    $("#createaccountbtn").click(function () {
       console.log("click create account btn");
       $("#content")[0].load("register.html");
     });
@@ -215,10 +266,57 @@ document.addEventListener('init', function (event) {
   }
 
 
-
 });
 
 function gomenu(id) {
   localStorage.setItem("curr_restid", id);
   $("#content")[0].load("restaurantmenu2.html");
+}
+function setcategory(type) {
+  localStorage.setItem("curr_type", type);
+  console.log("curr_type", localStorage.getItem("curr_type"));
+
+  $("#content")[0].load("restaurantlist2.html");
+}
+function addorder(price, name) {
+  var user = firebase.auth().currentUser;
+
+  if (user) {
+    var myitems = [];
+    if (localStorage.getItem("order") !== null) {
+      myitems = JSON.parse(localStorage.getItem("order"));
+    }
+    var item = {
+      price: price,
+      name: name,
+      amount: 1
+    };
+
+    console.log("myitem >", item);
+    console.log("myitems>", myitems);
+    console.log("myitems in localStorage >", localStorage.getItem("order"));
+
+    var isExist = false
+    myitems.forEach(element => {
+      if (element.name === item.name) {
+        element.amount++;
+        isExist = true;
+        console.log("got cha! name:", element.name, " amount:", element.amount);
+      }
+    });
+    if (!isExist)
+      myitems.push(item);
+
+    var total = 0;
+    myitems.forEach(element => {
+      total += element.price * element.amount;
+      console.log(element.name, " ==", element.price);
+    });
+    localStorage.setItem("order", JSON.stringify(myitems));
+    localStorage.setItem("total", total);
+    console.log("Total :", total);
+    $("#total").text(total);
+  } else {
+    $("#content")[0].load("login.html");
+  }
 }
