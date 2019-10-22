@@ -21,6 +21,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     console.log(email + " signed in");
   } else {
     localStorage.clear();
+    console.log("Clear!!!!!!!!");
     console.log("signed out");
   }
 });
@@ -81,6 +82,18 @@ document.addEventListener('init', function (event) {
     $("#thaifoodbtn").click(function () {
       console.log("click thaifoodbtn");
       setcategory("thaifood");
+    });
+    $("#noodlebtn").click(function () {
+      console.log("click noodlebtn");
+      setcategory("noodle");
+    });
+    $("#drinkbtn").click(function () {
+      console.log("click drinkbtn");
+      setcategory("drink");
+    });
+    $("#dessertbtn").click(function () {
+      console.log("click dessertbtn");
+      setcategory("dessert");
     });
   }
 
@@ -145,17 +158,19 @@ document.addEventListener('init', function (event) {
       $("#distance").text(distance)
       $("#time").text(time)
       $("#rating").text(rating)
-      $("#picture").css("background-image", "url('" + picture + "')")
+      $("#picture").css("background-image", "url('" + picture + "')");
       $("#status").text(status)
       $("#listmenu").empty()
       menu.forEach(element => {
         var item = `<ons-list-item style="background-color: rgb(230, 230, 230, 0.93);">
         <div class="left">${element.name}</div>
-        <div class="right"><span>${element.price}฿&nbsp&nbsp</span><ons-button onclick="addorder(${element.price},'${element.name}')"><ons-icon icon="fa-plus"></ons-icon></ons-button></div>
+        <div class="right"><span id="amountmenu"></span><span>${element.price}฿&nbsp&nbsp</span><ons-button style="background-color:black" onclick="addorder(${element.price},'${element.name}')">
+        <ons-icon icon="fa-plus"></ons-icon></ons-button></div>
         </ons-list-item>`
         $("#listmenu").append(item);
         console.log("name:", element.name, ",price:", element.price);
       });
+      
     }).catch(function (error) {
       console.log("Error getting cached document:", error);
     });
@@ -163,6 +178,7 @@ document.addEventListener('init', function (event) {
     console.log("restaurantlistPage");
     $("#backbtn").click(function () {
       localStorage.clear();
+      console.log("Clear!!!!!!!!");
       console.log("click backbtn RM")
       $("#content")[0].load("foodcategory2.html");
     });
@@ -179,7 +195,14 @@ document.addEventListener('init', function (event) {
     if (order !== null) {
       $("#order").empty();
       order.forEach(element => {
+        var valueid = localStorage.getItem("curr_restid");
 
+        var docRef = db.collection("restaurant").doc(valueid);
+
+        docRef.get().then(function (doc) {
+          var name = doc.data().name;
+          $("#restaurantname").text(name+" Restaurent");
+        });
         var item = `<ons-row >
         <ons-col>
         <div style="text-align:left; padding-left:28px" class="order">
@@ -198,6 +221,7 @@ document.addEventListener('init', function (event) {
         </ons-col>
         </ons-row>`
 
+        
         $("#order").append(item);
       });
       $("#total").text(JSON.parse(localStorage.getItem("total")));
@@ -205,6 +229,7 @@ document.addEventListener('init', function (event) {
     $("#creditcard").click(function(){
       console.log("pay as credit");
       localStorage.clear();
+      console.log("Clear!!!!!!!!");
       $("#content")[0].load("foodcategory2.html");
     });
 
@@ -225,6 +250,7 @@ document.addEventListener('init', function (event) {
     $("#logout").click(function () {
       firebase.auth().signOut().then(function () {
         localStorage.clear();
+        console.log("Clear!!!!!!!!");
         $("#content")[0].load("foodcategory2.html");
         $("#sidemenu")[0].close();
       }).catch(function (error) {
@@ -308,13 +334,21 @@ function addorder(price, name) {
       myitems.push(item);
 
     var total = 0;
+    var amountmenu = 0;
+    var menuname;
     myitems.forEach(element => {
+      amountmenu = element.amount;
       total += element.price * element.amount;
+      menuname = element.name;
       console.log(element.name, " ==", element.price);
     });
     localStorage.setItem("order", JSON.stringify(myitems));
+  
     localStorage.setItem("total", total);
     console.log("Total :", total);
+    console.log("Amount :", amountmenu);
+    console.log("Menu name:",menuname ,"Amount:",amountmenu);
+    
     $("#total").text(total);
   } else {
     $("#content")[0].load("login.html");
