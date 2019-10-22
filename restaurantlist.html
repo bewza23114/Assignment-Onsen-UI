@@ -1,139 +1,37 @@
-<!DOCTYPE html>
-<html>
+<ons-page id="restaurantlistPage">
+    <ons-toolbar style="background-color:rgb(112, 103, 99);">
+        <div style="padding-left: 15px" class="left">
+            <i id="backbtn" class="fas fa-chevron-left color"></i>
+        </div>
+        <div class="center color">Restaurant List</div>
+    </ons-toolbar>
+    <div id="listrestaurant"></div>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Times New Roman", Times, serif;
+        }
 
-<head>
-    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
-    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
-</head>
-<style>
-    #mypage .page__background {
-        background-size: 360px 640px;
-        background-image: url('https://i.pinimg.com/originals/84/e9/f5/84e9f58267582abf22fa8d87ab43acba.jpg');
-        opacity: 0.4;
-    }
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            background-color: rgba(230, 230, 230, 0.925);
+        }
 
-    * {
-        box-sizing: border-box;
-        font-family: "Times New Roman", Times, serif;
-    }
+        .size {
+            font-size: 40px;
+        }
 
-    .card {
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        background-color: rgba(230, 230, 230, 0.925);
-    }
+        .color {
+            color: whitesmoke;
+        }
 
-    .size {
-        font-size: 40px;
-    }
-
-    .color {
-        color: whitesmoke;
-    }
-
-    .btncard {
-        padding-top: 16px;
-        font-weight: bold;
-        background-color: rgb(145, 158, 158);
-        padding: 16px;
-        border-radius: 30px;
-    }
-</style>
-
-<body>
-    <ons-page id="mypage">
-        <ons-toolbar style="background-color:rgb(112, 103, 99);">
-            <div style="padding-left: 15px" class="left">
-                <i onclick="window.location.href='foodcategory.html'" class="fas fa-chevron-left color"></i>
-            </div>
-            <div class="center color">Restaurant List</div>
-        </ons-toolbar>
-        <ons-card>
-            <ons-row>
-                <img src="http://pluspng.com/img-png/restaurant-png-hd-fast-food-restaurant-logos-1024.png"
-                    alt="Onsen UI" style="width: 22%">
-                <ons-col style="padding-left: 7px">
-                    <div style="font-weight: bold;">Burger King</div>
-                    <div style="font-size: 13px">Distance : 23 km / 27 min</div>
-                    <div style="color: rgb(17, 180, 58)">Open</div>
-                </ons-col>
-                <div onclick="window.location.href='restaurantmenu.html'" class="btncard">Go</div>
-            </ons-row>
-        </ons-card>
-        <ons-card>
-            <ons-row>
-                <img src="https://azpng.com/png/2019/08/02/mcdonalds-fast-food-logo-golden-arches-restaurant-transparent.png"
-                    alt="Onsen UI" style="height: 51px; width: 68px;">
-                <ons-col style="padding-left: 7px">
-                    <div style="font-weight: bold;">McDonald's</div>
-                    <div style="font-size: 13px">Distance : 4 km / 12 min</div>
-                    <div style="color: rgb(17, 180, 58)">Open</div>
-                </ons-col>
-                <div class="btncard">Go</div>
-            </ons-row>
-        </ons-card>
-        <ons-card>
-            <ons-row>
-                <img src="https://watermarkatthegrove.com/wp-content/uploads/2018/07/DQ.png" alt="Onsen UI"
-                    style="width: 22%">
-                <ons-col style="padding-left: 7px">
-                    <div style="font-weight: bold;">Dairy Queen</div>
-                    <div style="font-size: 13px">Distance : 8 km / 19 min</div>
-                    <div style="color: rgb(17, 180, 58)">Open</div>
-                </ons-col>
-                <div class="btncard">Go</div>
-            </ons-row>
-        </ons-card>
-        <ons-card>
-            <ons-row>
-                <img src="https://zytrio.com/restaurant/images/vendor_restaurant_1557928587.png" alt="Onsen UI"
-                    style="height: 51px; width: 68px;">
-                <ons-col style="padding-left: 7px">
-                    <div style="font-weight: bold;">Pizza Hut</div>
-                    <div style="font-size: 13px">Distance : 9 km / 20 min</div>
-                    <div style="color: rgb(17, 180, 58)">Open</div>
-                </ons-col>
-                <div class="btncard">Go</div>
-            </ons-row>
-        </ons-card>
-        <ons-card>
-            <ons-row>
-                <img src="https://www.mkrestaurant.com/public/assets/img/icon/logo__mk.png  " alt="Onsen UI"
-                    style="width: 22%">
-                <ons-col style="padding-left: 7px">
-                    <div style="font-weight: bold;">Mk Restaurant</div>
-                    <div style="font-size: 13px">Distance : 7 km / 16 min</div>
-                    <div style="color: rgb(216, 72, 35)">Close</div>
-                </ons-col>
-                <div class="btncard">Go</div>
-            </ons-row>
-        </ons-card>
-        <ons-card>
-            <ons-row>
-                <img src="https://logos-download.com/wp-content/uploads/2016/03/Subway_restaurant_logo_with_slogan_eat_fresh.png"
-                    alt="Onsen UI" style="width: 22%">
-                <ons-col style="padding-left: 7px">
-                    <div style="font-weight: bold;">Subway</div>
-                    <div style="font-size: 13px">Distance : 5 km / 13 min</div>
-                    <div style="color: rgb(216, 72, 35)">Close</div>
-                </ons-col>
-                <div class="btncard">Go</div>
-            </ons-row>
-        </ons-card>
-        <ons-card>
-            <ons-row>
-                <img src="https://purepng.com/public/uploads/large/purepng.com-starbucks-logologobrand-logoiconslogos-251519940454ao8bk.png"
-                    alt="Onsen UI" style="height: 51px; width: 68px;">
-                <ons-col style="padding-left: 7px">
-                    <div style="font-weight: bold;">Starbucks</div>
-                    <div style="font-size: 13px">Distance : 3 km / 10 min</div>
-                    <div style="color: rgb(216, 72, 35)">Close</div>
-                </ons-col>
-                <div class="btncard">Go</div>
-            </ons-row>
-        </ons-card>
-    </ons-page>
-</body>
-
-</html>
+        .btncard {
+            padding-top: 10px;
+            margin-top: 8px;
+            font-weight: bold;
+            background-color: rgb(145, 158, 158);
+            padding: 10px;
+            border-radius: 30px;
+        }
+    </style>
+</ons-page>

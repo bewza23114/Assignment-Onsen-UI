@@ -19,10 +19,14 @@ firebase.auth().onAuthStateChanged(function (user) {
     // User is signed in.
     var email = user.email;
     console.log(email + " signed in");
+    $("#loginbtn").hide();
+    $("#logoutbtn").show();
   } else {
     localStorage.clear();
     console.log("Clear!!!!!!!!");
     console.log("signed out");
+    $("#loginbtn").show();
+    $("#logoutbtn").hide();
   }
 });
 
@@ -35,7 +39,7 @@ document.addEventListener('init', function (event) {
     firebase.auth().signInWithPopup(provider).then(function (result) {
       var token = result.credential.accessToken;
       var user = result.user;
-      $("#content")[0].load("foodcategory2.html");
+      $("#content")[0].load("foodcategory.html");
       // ...
     }).catch(function (error) {
       var errorCode = error.code;
@@ -131,11 +135,11 @@ document.addEventListener('init', function (event) {
     console.log("restaurantlistPage");
     $("#backbtn").click(function () {
       console.log("click backbtn RT")
-      $("#content")[0].load("foodcategory2.html");
+      $("#content")[0].load("foodcategory.html");
     });
     $("#gobtn").click(function () {
       console.log("click gobtn")
-      $("#content")[0].load("restaurantmenu2.html");
+      $("#content")[0].load("restaurantmenu.html");
     });
   }
 
@@ -170,7 +174,7 @@ document.addEventListener('init', function (event) {
         $("#listmenu").append(item);
         console.log("name:", element.name, ",price:", element.price);
       });
-      
+
     }).catch(function (error) {
       console.log("Error getting cached document:", error);
     });
@@ -180,11 +184,11 @@ document.addEventListener('init', function (event) {
       localStorage.clear();
       console.log("Clear!!!!!!!!");
       console.log("click backbtn RM")
-      $("#content")[0].load("foodcategory2.html");
+      $("#content")[0].load("foodcategory.html");
     });
     $("#orderbtn").click(function () {
       console.log("click orderbtn")
-      $("#content")[0].load("orderconfirmation2.html");
+      $("#content")[0].load("orderconfirmation.html");
     });
   }
   if (page.id === 'orderconfirmationPage') {
@@ -201,7 +205,7 @@ document.addEventListener('init', function (event) {
 
         docRef.get().then(function (doc) {
           var name = doc.data().name;
-          $("#restaurantname").text(name+" Restaurent");
+          $("#restaurantname").text(name + " Restaurant");
         });
         var item = `<ons-row >
         <ons-col>
@@ -221,21 +225,28 @@ document.addEventListener('init', function (event) {
         </ons-col>
         </ons-row>`
 
-        
+
         $("#order").append(item);
       });
       $("#total").text(JSON.parse(localStorage.getItem("total")));
     }
-    $("#creditcard").click(function(){
-      console.log("pay as credit");
-      localStorage.clear();
-      console.log("Clear!!!!!!!!");
-      $("#content")[0].load("foodcategory2.html");
-    });
+
+    var user = firebase.auth().currentUser;
+
+    if (user) {
+      $("#creditcard").click(function () {
+        console.log("pay as credit");
+        localStorage.clear();
+        console.log("Clear!!!!!!!!");
+        $("#content")[0].load("foodcategory.html");
+      });
+    } else {
+      $("#content")[0].load("login.html");
+    }
 
     $("#backbtn").click(function () {
       console.log("click backbtn OC")
-      $("#content")[0].load("restaurantmenu2.html");
+      $("#content")[0].load("restaurantmenu.html");
     });
   }
 
@@ -251,7 +262,7 @@ document.addEventListener('init', function (event) {
       firebase.auth().signOut().then(function () {
         localStorage.clear();
         console.log("Clear!!!!!!!!");
-        $("#content")[0].load("foodcategory2.html");
+        $("#content")[0].load("foodcategory.html");
         $("#sidemenu")[0].close();
       }).catch(function (error) {
         console.log(error.message);
@@ -259,7 +270,7 @@ document.addEventListener('init', function (event) {
     });
 
     $("#home").click(function () {
-      $("#content")[0].load("foodcategory2.html");
+      $("#content")[0].load("foodcategory.html");
       $("#sidemenu")[0].close();
     });
   }
@@ -271,7 +282,7 @@ document.addEventListener('init', function (event) {
       var username = $("#username").val();
       var password = $("#password").val();
       firebase.auth().signInWithEmailAndPassword(username, password).then(function () {
-        $("#content")[0].load("foodcategory2.html");
+        $("#content")[0].load("foodcategory.html");
         $("#sidemenu")[0].close();
       }).catch(function (error) {
         console.log(error.message);
@@ -282,27 +293,60 @@ document.addEventListener('init', function (event) {
       $("#content")[0].load("register.html");
     });
     $("#backhomebtn").click(function () {
-      $("#content")[0].load("foodcategory2.html");
+      $("#content")[0].load("foodcategory.html");
     });
   }
   if (page.id === 'registerPage') {
     $("#backhomebtn").click(function () {
-      $("#content")[0].load("foodcategory2.html");
+      $("#content")[0].load("foodcategory.html");
     });
   }
+  $("#registerbtn").click(function () {
+    var email = document.getElementById('email').value;
+    var password = document.getElementById('password').value;
+    var fullname = document.getElementById('fullname').value;
+    var phonenumber = document.getElementById("phonenumber");
+    var RE = /^[\d\.\-]+$/;
 
+    firebase.auth().createUserWithEmailAndPassword(email, password).then(function (error) {
+      $("#content")[0].load("foodcategory.html");
+
+    }).catch(function (error) {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+
+      if (errorCode === 'auth/weak-password') {
+        alert('The password is too weak');
+      }
+      if (fullname.val == null) {
+        alert("You have entered your name");
+        return false;
+      }
+      else {
+        alert(errorMessage);
+      }
+      if (!RE.test(phonenumber.value)) {
+        alert("You have entered an invalid phone number");
+        return false;
+      }
+      else {
+        alert(errorMessage);
+      }
+      console.log(error);
+    });
+  });
 
 });
 
 function gomenu(id) {
   localStorage.setItem("curr_restid", id);
-  $("#content")[0].load("restaurantmenu2.html");
+  $("#content")[0].load("restaurantmenu.html");
 }
 function setcategory(type) {
   localStorage.setItem("curr_type", type);
   console.log("curr_type", localStorage.getItem("curr_type"));
 
-  $("#content")[0].load("restaurantlist2.html");
+  $("#content")[0].load("restaurantlist.html");
 }
 function addorder(price, name) {
   var user = firebase.auth().currentUser;
@@ -343,12 +387,12 @@ function addorder(price, name) {
       console.log(element.name, " ==", element.price);
     });
     localStorage.setItem("order", JSON.stringify(myitems));
-  
+
     localStorage.setItem("total", total);
     console.log("Total :", total);
     console.log("Amount :", amountmenu);
-    console.log("Menu name:",menuname ,"Amount:",amountmenu);
-    
+    console.log("Menu name:", menuname, "Amount:", amountmenu);
+
     $("#total").text(total);
   } else {
     $("#content")[0].load("login.html");

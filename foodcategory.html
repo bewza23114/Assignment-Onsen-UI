@@ -1,131 +1,139 @@
-<!DOCTYPE html>
-<html>
+<ons-page id="foodcategoryPage">
+    <ons-toolbar style="background-color:rgb(112, 103, 99);">
+        <div style="padding-left: 15px" class="left">
+            <i id="menubtn" class="fas fa-bars color"></i>
+        </div>
+        <div class="center color">Food Category</div>
+    </ons-toolbar>
 
-<head>
-    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
-    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
-</head>
-<style>
-    #mypage .page__background {
-        background-size: 360px 640px;
-        background-image: url('https://i.pinimg.com/originals/84/e9/f5/84e9f58267582abf22fa8d87ab43acba.jpg');
-        opacity: 0.4;
-    }
+    <p style="text-align: center; margin-top: 5px; margin-bottom: 10px;">
+        <ons-search-input placeholder="Food or Restuarant" style="width: 308px; height: 42px;">
+        </ons-search-input>
+    </p>
 
-    * {
-        box-sizing: border-box;
-        font-family: "Times New Roman", Times, serif;
-    }
+    <ons-carousel auto-scroll auto-scroll-ratio="0.5" auto-refresh swipeable overscrollable class="recomended_list"
+        id="carousel" style="height: 200px;">
+    </ons-carousel>
 
-    .column {
-        float: left;
-        width: 25%;
-        padding: 0 10px;
-    }
+    <div class="row color" style="margin-top:8px">
+        <div class="column">
+            <div id="fastfoodbtn" class="card">
+                <h3><i class="fas fa-hamburger size"></i></h3>
+                <p>Fast Food</p>
+            </div>
+        </div>
 
-    .row {
-        margin: 0 -5px;
-        margin-top: 20px;
-    }
+        <div class="column">
+            <div id="steakbtn" class="card">
+                <h3><i class="fas fa-drumstick-bite size"></i></h3>
+                <p>Steak</p>
+            </div>
+        </div>
+        <div class="column">
+            <div id="thaifoodbtn" class="card">
+                <h3><i class="fas fa-pepper-hot size"></i></h3>
+                <p>Thai Food</p>
+            </div>
+        </div>
 
-    .row:after {
-        content: "";
-        display: table;
-        clear: both;
-    }
+        <div class="column">
+            <div id="noodlebtn" class="card">
+                <h3><i class="fas fa-bacon size"></i></h3>
+                <p>Noodle</p>
+            </div>
+        </div>
+        <div class="column">
+            <div id="drinkbtn" class="card">
+                <h3><i class="fas fa-glass-whiskey size"></i></h3>
+                <p>Drink</p>
+            </div>
+        </div>
 
-    @media screen and (max-width: 600px) {
-        .column {
-            width: 50%;
-            display: block;
-            margin-bottom: 5px;
+        <div class="column">
+            <div id="dessertbtn" class="card">
+                <h3><i class="fas fa-ice-cream size"></i></h3>
+                <p>Dessert</p>
+            </div>
+        </div>
+    </div>
+    <p style="font-size: 19px; text-align: center">more..</p>
+    <style type="text/css">
+        .recomended_item {
+            padding-left: 10px;
+            padding-right: 10px;
         }
-    }
 
-    .card {
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        padding: 16px;
-        text-align: center;
-        background-color: rgba(117, 122, 128, 0.938);
-    }
+        .recomended_item_title {
+            font-size: 20px;
+            font-weight: bold;
+            padding:8px;
+            padding-left:10px;
+        }
 
-    .size {
-        font-size: 40px;
-    }
+        .thumbnail {
+            background-size: 350px auto;
+            background-repeat: no-repeat;
+            background-position: center;
+            height:150px;
+        }
 
-    .color {
-        color: whitesmoke;
-    }
-</style>
+        .recomended_list {
+            height: 150px;
+        }
 
-<body>
-    
-    <ons-page id="mypage">
-        <ons-toolbar style="background-color:rgb(112, 103, 99);">
-            <div style="padding-left: 15px" class="left">
-                <i onclick="window.location.href='index.html'" class="fas fa-chevron-left color"></i>
-            </div>
-            <div class="center color">Food Category</div>
-        </ons-toolbar>
+        .recomended {
+            background-color: white;
+            padding-top: 60px;
+        }
 
-        <div style="text-align: center; padding-top: 20px;">
-            <label class="radio-button radio-button--material">
-                <input type="radio" class="radio-button__input radio-button--material__input" name="r"
-                    checked="checked">
-                <div class="radio-button__checkmark radio-button--material__checkmark"></div>
-                Delivery &nbsp;&nbsp;&nbsp;&nbsp;
-            </label>
-            <label class="radio-button radio-button--material">
-                <input type="radio" class="radio-button__input radio-button--material__input" name="r">
-                <div class="radio-button__checkmark radio-button--material__checkmark"></div>
-                Pickup
-            </label>
-        </div>
-        <div class="row color">
-            <div class="column">
-                <div onclick="window.location.href='restaurantlist.html'" class="card">
-                    <h3><i class="fas fa-drumstick-bite size"></i></h3>
-                    <p>Meat</p>
-                </div>
-            </div>
+        .menu_list {
+            background: transparent;
+        }
 
-            <div class="column">
-                <div class="card">
-                    <h3><i class="fas fa-pizza-slice size"></i></h3>
-                    <p>Pizza</p>
-                </div>
-            </div>
-            <div class="column">
-                <div class="card">
-                    <h3><i class="fas fa-bread-slice size"></i></h3>
-                    <p>Bread</p>
-                </div>
-            </div>
+        .menu_item {
+            color: white;
+            font-size: 12px;
+        }
 
-            <div class="column">
-                <div class="card">
-                    <h3><i class="fas fa-cheese size"></i></h3>
-                    <p>Cake</p>
-                </div>
-            </div>
-            <div class="column">
-                <div class="card">
-                    <h3><i class="fas fa-carrot size"></i></h3>
-                    <p>Vegetable</p>
-                </div>
-            </div>
+        .menu_item ons-icon {
+            margin-right: 10px;
+            color: gray;
+            font-size: 16px;
+        }
 
-            <div class="column">
-                <div class="card">
-                    <h3><i class="fas fa-apple-alt size"></i></h3>
-                    <p>Fruit</p>
-                </div>
-            </div>
-        </div>
-        <p style="font-size: 19px; text-align: center">more..</p>
-    </ons-page>
-</body>
+        .category_content {
+            background-color: white;
+        }
 
-</html>
+        .category {
+            margin: 20px 0px;
+            padding: 0px 30px;
+        }
+
+        .category_wrapper {
+            max-width: 150px;
+            width: 95%;
+            height: 120px;
+            margin: auto;
+            background-color: gold;
+        }
+
+        .category_wrapper ons-icon {
+            font-size: 55px;
+            padding-top: 10px;
+            line-height: 0.75em;
+        }
+
+        .category_thumbnail {
+            display: inline-block;
+            margin: 16px 0px;
+        }
+
+        .category_title {
+            font-size: 30px;
+            font-weight: bold;
+            color: white;
+            padding-top: 20px;
+        }
+    </style>
+</ons-page>
